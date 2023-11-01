@@ -1,6 +1,7 @@
 package com.example.music.model.entity;
 
 import com.example.music.Enum.Gender;
+import com.example.music.model.dto.SignUp;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -63,4 +65,10 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<PlayHistory> playHistories;
+
+    public User(SignUp userRequest){
+        this.username = userRequest.getUsername();
+        this.password = userRequest.getPassword();
+        this.email = userRequest.getEmail();
+    }
 }
