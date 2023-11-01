@@ -2,7 +2,7 @@ package com.example.music.controller;
 
 import com.example.music.model.dto.SignUp;
 import com.example.music.model.entity.User;
-import com.example.music.service.UserService;t
+import com.example.music.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
