@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "Tutorial Model Information")
-public class SignUp {
+public class SignupDTO {
     @Schema(description = "Người dùng nhập username. Nếu username đã tồn tại -> nhận được thông báo lỗi (cái này Backend xủ lí)",
             example = "customer007")
     private String username;

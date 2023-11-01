@@ -5,9 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-
+//http://localhost:8081/swagger-ui/index.html#/
 @OpenAPIDefinition(info = @Info(
-        title = "API InfoShare",
+        title = "API AndroidMusicApp",
         description = "API Documentation for My Spring Boot Application",
         version = "1.0"
 ))
