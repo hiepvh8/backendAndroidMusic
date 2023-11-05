@@ -25,6 +25,8 @@ public class Song {
 
     private String title;
 
+    private String filePath;
+
     private int duration; // Thời lượng giây
 
     @Enumerated(EnumType.STRING)

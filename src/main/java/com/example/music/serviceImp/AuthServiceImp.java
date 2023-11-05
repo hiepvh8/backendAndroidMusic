@@ -6,16 +6,13 @@ import com.example.music.model.dto.SigninDTO;
 import com.example.music.model.dto.SignupDTO;
 import com.example.music.model.entity.Album;
 import com.example.music.model.entity.User;
-import com.example.music.repository.AlbumRepository;
 import com.example.music.repository.UserRepository;
 import com.example.music.security.JwtService;
 import com.example.music.service.AuthService;
-import com.example.music.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,6 +25,10 @@ public class AuthServiceImp implements AuthService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+    }
+    @Override
+    public void deleteUserById(Long userId) {
+        userRepository.deleteById(userId);
     }
 
     @Override
