@@ -2,6 +2,7 @@ package com.example.music.model.entity;
 
 import com.example.music.Enum.Genre;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,8 @@ public class Song {
 
     private String title;
 
+    private String filePath;
+
     private int duration; // Thời lượng giây
 
     @Enumerated(EnumType.STRING)
@@ -42,6 +45,7 @@ public class Song {
 
     @ManyToOne
     @JoinColumn(name = "album_id", referencedColumnName = "id")
+    @JsonBackReference
     private Album album;
 
     @OneToMany(mappedBy = "song", cascade = CascadeType.ALL)

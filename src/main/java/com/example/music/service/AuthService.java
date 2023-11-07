@@ -5,7 +5,9 @@ import com.example.music.model.dto.SigninDTO;
 import com.example.music.model.dto.SignupDTO;
 
 public interface AuthService {
-//    public Boolean createUser(SignupDTO userDto);
+    public void deleteUserById(Long userId);
+
+    //    public Boolean createUser(SignupDTO userDto);
 //    public AuthResponse searchUser(SigninDTO signinDTO);
 public AuthResponse register(SignupDTO signupDTO);
     public AuthResponse login(SigninDTO signinDTO);
