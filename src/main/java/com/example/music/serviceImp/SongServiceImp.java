@@ -102,32 +102,6 @@ public class SongServiceImp implements SongService {
         return lists;
     }
 
-//    public boolean addSong(SongDTO songDTO, MultipartFile imageFile, MultipartFile audioFile){
-//        boolean temp = false;
-//        try{
-//            Song song = new Song();
-//            song.setTitle(songDTO.getTitle());
-//            song.setDuration(songDTO.getDuration());
-//            song.setGenre(songDTO.getGenre());
-//            song.setYear(songDTO.getYear());
-//            song.setLyrics(songDTO.getLyrics());
-//            String urlImage = createPathUrlForImage(imageFile);
-//            String urlAudio = createPathUrlForMedia(audioFile);
-//
-//            if(urlImage != null && urlAudio != null){
-//                song.setCoverArt(urlImage);
-//                song.setFilePath(urlAudio);
-//                songRepository.save(song);
-//                temp = true;
-//            }else{
-//                throw new NotFoundException("Thêm bài hát không thành công!");
-//            }
-//        }catch (Exception e){
-//            new NotFoundException("Lỗi!");
-//        }
-//        return temp;
-//    }
-
     public Song addSong(SongDTO songDTO, Long albumId){
         Album album = albumService.getAlbumById(albumId);
         if(album == null){

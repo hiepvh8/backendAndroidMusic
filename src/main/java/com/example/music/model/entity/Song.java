@@ -2,6 +2,7 @@ package com.example.music.model.entity;
 
 import com.example.music.Enum.Genre;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -44,6 +45,7 @@ public class Song {
 
     @ManyToOne
     @JoinColumn(name = "album_id", referencedColumnName = "id")
+    @JsonBackReference
     private Album album;
 
     @OneToMany(mappedBy = "song", cascade = CascadeType.ALL)

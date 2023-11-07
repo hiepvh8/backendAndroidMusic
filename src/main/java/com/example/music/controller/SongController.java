@@ -43,53 +43,51 @@ public class SongController {
         return ResponseEntity.ok(songService.getAllSongForGenre(genre));
     }
 
-//    @PostMapping("/add")
-//    public ResponseEntity<String> addSong(@RequestBody SongDTO songDTO,
-//                                          @RequestParam("imageFile") MultipartFile imageFile,
-//                                          @RequestParam("audioFile") MultipartFile audioFile) {
-//
-//        songService.addSong(songDTO,imageFile,audioFile);
-//
-//        return ResponseEntity.ok("Thành Công");
-//    }
+    @Operation(
+            summary = "client gửi PostMethod yêu cầu tạo bài hát. Dùng sesion để call api aupdateall",
+            description = "Lúc này chỉ thêm các trường cơ bản songDTO, chưa có ảnh và audio. sau khi tạo bài hát gồm các trường cơ bản rồi mới thêm ảnh và file audio sau. Sau khi thực hiện api này thì phải thực hiện luôn api apdateall để upload ảnh và audio. Dùng session. "
+    )
+    @PostMapping("/add")
+    public ResponseEntity<String> addSong(@RequestBody SongDTO songDTO, @RequestParam("albumId") Long albumId, HttpSession session) {
 
-//    @PostMapping("/add")
-//    public ResponseEntity<String> addSong(@RequestBody SongDTO songDTO, @RequestParam("albumId") Long albumId, HttpSession session) {
-//
-//        Song song = songService.addSong(songDTO, albumId);
-//        Long id = song.getId();
-//
-//        // Lưu trữ ID trong phiên làm việc
-//        session.setAttribute("yourKeyForID", id);
-//
-//        return ResponseEntity.ok("Thành Công");
-//    }
-//
-//    @PutMapping("/updateall")
-//    public ResponseEntity<String> updateallSong(@RequestParam("image") MultipartFile image, @RequestParam("audio") MultipartFile audio, HttpSession session){
-//        // Lấy ID từ phiên làm việc
-//        Long id = (Long) session.getAttribute("yourKeyForID");
-//        // Sử dụng ID cho API thứ hai
-//        if (id != null) {
-//            // Thực hiện xử lý với ID
-//            songService.updateSong(image,audio,id);
-//            return ResponseEntity.ok("Thành công!");
-//        } else {
-//            return ResponseEntity.badRequest().body("ID không tồn tại trong phiên làm việc.");
-//        }
-//    }
+        Song song = songService.addSong(songDTO, albumId);
+        Long id = song.getId();
 
-    @PostMapping("/xemha")
-    public ResponseEntity<String> xemhinhanh(@RequestParam("image") MultipartFile image){
-        return ResponseEntity.ok(songService.xemTruocAvatar(image));
-    }
-    @PostMapping("/xembh")
-    public ResponseEntity<String> xembaihat(@RequestParam("audio") MultipartFile audio){
-        return ResponseEntity.ok(songService.xemTruocAudio(audio));
+        // Lưu trữ ID trong phiên làm việc
+        session.setAttribute("yourKeyForID", id);
+
+        return ResponseEntity.ok("Thành Công");
     }
 
-    @PostMapping("/xemall")
-    public ResponseEntity<String> xemall(@RequestParam("image") MultipartFile image, @RequestParam("audio") MultipartFile audio){
-        return ResponseEntity.ok(songService.xemTruocAll(image,audio).toString());
+    @Operation(
+            summary = "client gửi PostMethod để upload nốt ảnh và audio trong quá trình thêm 1 bài hát ",
+            description = ""
+    )
+    @PutMapping("/updateall")
+    public ResponseEntity<String> updateallSong(@RequestParam("image") MultipartFile image, @RequestParam("audio") MultipartFile audio, HttpSession session){
+        // Lấy ID từ phiên làm việc
+        Long id = (Long) session.getAttribute("yourKeyForID");
+        // Sử dụng ID cho API thứ hai
+        if (id != null) {
+            // Thực hiện xử lý với ID
+            songService.updateSong(image,audio,id);
+            return ResponseEntity.ok("Thành công!");
+        } else {
+            return ResponseEntity.badRequest().body("ID không tồn tại trong phiên làm việc.");
+        }
     }
+
+//    @PostMapping("/xemha")
+//    public ResponseEntity<String> xemhinhanh(@RequestParam("image") MultipartFile image){
+//        return ResponseEntity.ok(songService.xemTruocAvatar(image));
+//    }
+//    @PostMapping("/xembh")
+//    public ResponseEntity<String> xembaihat(@RequestParam("audio") MultipartFile audio){
+//        return ResponseEntity.ok(songService.xemTruocAudio(audio));
+//    }
+
+//    @PostMapping("/xemall")
+//    public ResponseEntity<String> xemall(@RequestParam("image") MultipartFile image, @RequestParam("audio") MultipartFile audio){
+//        return ResponseEntity.ok(songService.xemTruocAll(image,audio).toString());
+//    }
 }

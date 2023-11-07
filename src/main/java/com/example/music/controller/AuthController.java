@@ -42,7 +42,8 @@ public class AuthController {
         return ResponseEntity.ok(authService.resetPassword(signinDTO));
     }
 
-    @PostMapping ("/delete/{userId}")
+    //Chưa xử lý xóa đc
+    @DeleteMapping ("/delete/{userId}")
     public void deleteUser(@PathVariable Long userId) {
         authService.deleteUserById(userId);
     }
