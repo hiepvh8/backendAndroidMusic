@@ -32,7 +32,7 @@ public class SongServiceImp implements SongService {
         this.albumService = albumService;
     }
 
-    // Map Song -> SongDTOAll
+    // Map Song -> SongDTOAll.
     public List<SongDTOAll> mapSongsToSongDTOAll(List<Song> songs) {
         List<SongDTOAll> songDTOAllList = new ArrayList<>();
 
