@@ -1,6 +1,7 @@
 package com.example.music.model.entity;
 
 import com.example.music.Enum.Genre;
+import com.example.music.model.dto.SongDTOAll;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -60,4 +61,6 @@ public class Song {
 
     @OneToMany(mappedBy = "song")
     private List<PlayHistory> playHistories;
+
+
 }

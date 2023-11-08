@@ -13,4 +13,6 @@ import java.util.List;
 public interface SongRepository extends JpaRepository<Song, Long> {
     public Song getSongById(Long songId);
     List<Song> findByGenre(Genre genre);
+    List<Song> findByTitleContaining(String partialTitle);
+    List<Song> findAllByOrderByPlayCountDesc();
 }
