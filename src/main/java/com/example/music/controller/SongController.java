@@ -2,6 +2,7 @@ package com.example.music.controller;
 
 import com.example.music.Enum.Genre;
 import com.example.music.model.dto.SongDTO;
+import com.example.music.model.dto.SongDTOAll;
 import com.example.music.model.entity.Album;
 import com.example.music.model.entity.Song;
 import com.example.music.service.AlbumService;
@@ -12,6 +13,8 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Tag(name = "Bài Hát", description = "")
 @RestController
@@ -90,4 +93,32 @@ public class SongController {
 //    public ResponseEntity<String> xemall(@RequestParam("image") MultipartFile image, @RequestParam("audio") MultipartFile audio){
 //        return ResponseEntity.ok(songService.xemTruocAll(image,audio).toString());
 //    }
+@Operation(
+        summary = "client gửi GetMethod để tìm bài hát theo tên gần đúng ",
+        description = ""
+)
+    @GetMapping("/search")
+    public ResponseEntity<List<SongDTOAll>> searchSongsByPartialTitle(@RequestParam String partialTitle) {
+        return ResponseEntity .ok(songService.searchSongsByPartialTitle(partialTitle));
+    }
+
+    @Operation(
+            summary = "client gửi PostMethod để nghe audio và tăng số lượt nghe lên 1 ",
+            description = "Bắt sự kiện api khi ấn nghe nhạc để tăng tượt nghe lên 1"
+    )
+    @PostMapping("/play/{songId}")
+    public ResponseEntity<String> playSong(@PathVariable Long songId) {
+        songService.incrementPlayCount(songId);
+        return ResponseEntity.ok("Song play count incremented. Thành Công!");
+    }
+
+    @Operation(
+            summary = "client gửi GetMethod để hiển thị danh sach bai hát nổi bật cs lượt nghe cao ",
+            description = ""
+    )
+    @GetMapping("/topplaycount")
+    public ResponseEntity<List<SongDTOAll>> getSongsByPlayCountDescending() {
+        List<SongDTOAll> songDTOAlls = songService.getSongsByPlayCountDescending();
+        return ResponseEntity.ok(songDTOAlls);
+    }
 }
