@@ -16,4 +16,10 @@ public class AlbumServiceImp implements AlbumService {
     public Album getAlbumById(Long albumId){
         return albumRepository.getAlbumById(albumId);
     }
+
+    @Override
+    public Long getAlbumIdByUserId(Long userId) {
+        Album album = albumRepository.findByUserId(userId);
+        return album != null ? album.getId() : null;
+    }
 }
