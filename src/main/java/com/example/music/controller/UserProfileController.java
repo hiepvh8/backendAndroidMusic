@@ -39,4 +39,16 @@ public class UserProfileController {
                 .thenCombine(songsFuture, UserProfileDTO::new)
                 .join();
     }
+    @GetMapping("/profile/username/{viewerId}/{targetUsername}")
+    public UserProfileDTO getUserProfileDatabyUsername(
+            @PathVariable Long viewerId,
+            @PathVariable String targetUsername) {
+
+        CompletableFuture<Boolean> followerStatusFuture = userProfileService.checkFollowerStatusbyUsername(viewerId, targetUsername);
+        CompletableFuture<List<Song>> songsFuture = userProfileService.getSongsbyUsername(targetUsername);
+
+        return followerStatusFuture
+                .thenCombine(songsFuture, UserProfileDTO::new)
+                .join();
+    }
 }

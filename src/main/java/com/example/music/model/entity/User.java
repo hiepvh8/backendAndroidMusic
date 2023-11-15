@@ -54,18 +54,23 @@ public class User implements UserDetails {
     private Album album;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Feadback> feadbacks;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Folower> folowers;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<PlayList> playLists;
 
     @OneToMany(mappedBy = "user")
+    @JsonBackReference
     private List<PlayHistory> playHistories;
 
     public User(SignupDTO signupDTO){

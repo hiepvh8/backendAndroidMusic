@@ -40,5 +40,22 @@ public class UserProfileServiceImp implements UserProfileService {
                 .thenCombine(songsFuture, UserProfileDTO::new)
                 .join();
     }
+    //==========================
 
+    public CompletableFuture<Boolean> checkFollowerStatusbyUsername(Long viewerId, String targetUsername) {
+        return CompletableFuture.supplyAsync(() -> folowerService.isFollowingbyUsername(viewerId, targetUsername));
+    }
+
+    public CompletableFuture<List<Song>> getSongsbyUsername(String targetUsername) {
+        return CompletableFuture.supplyAsync(() -> songService.getSongsByAlbumId(albumService.getAlbumIdByUsername(targetUsername)));
+    }
+
+    public UserProfileDTO getUserProfileDatabyUsername(Long viewerId, Long targetUsername) {
+        CompletableFuture<Boolean> followerStatusFuture = checkFollowerStatus(viewerId, targetUsername);
+        CompletableFuture<List<Song>> songsFuture = getSongs(targetUsername);
+
+        return followerStatusFuture
+                .thenCombine(songsFuture, UserProfileDTO::new)
+                .join();
+    }
 }

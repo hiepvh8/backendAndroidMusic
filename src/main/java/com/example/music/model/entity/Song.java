@@ -50,6 +50,7 @@ public class Song {
     private Album album;
 
     @OneToMany(mappedBy = "song", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "song", cascade = CascadeType.ALL)
@@ -57,6 +58,7 @@ public class Song {
     private List<PlayListSong> playListSongs;
 
     @OneToMany(mappedBy = "song")
+    @JsonBackReference
     private List<PlayHistory> playHistories;
 
 
