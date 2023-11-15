@@ -11,17 +11,17 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "folower")
-public class Folower {
+@Table(name = "playlist_song")
+public class PlayListSong {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long foloweduserid;
+    @ManyToOne
+    @JoinColumn(name = "playlist_id")
+    private PlayList playList;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
-
-
+    @JoinColumn(name = "song_id")
+    private Song song;
 }

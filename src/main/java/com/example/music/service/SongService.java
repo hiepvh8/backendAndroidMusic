@@ -24,4 +24,6 @@ public interface SongService {
 
 
     List<SongDTOAll> getSongsByPlayCountDescending();
+
+    List<Song> getSongsByAlbumId(Long albumId);
 }

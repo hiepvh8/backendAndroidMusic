@@ -9,6 +9,7 @@ import com.example.music.model.entity.User;
 import com.example.music.repository.UserRepository;
 import com.example.music.security.JwtService;
 import com.example.music.service.AuthService;
+import com.example.music.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,12 +20,14 @@ import java.util.Optional;
 public class AuthServiceImp implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
     private final JwtService jwtService;
 
-    public AuthServiceImp(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
+    public AuthServiceImp(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, UserService userService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.userService = userService;
     }
     @Override
     public void deleteUserById(Long userId) {
@@ -34,9 +37,21 @@ public class AuthServiceImp implements AuthService {
     @Override
     public AuthResponse register(SignupDTO signupDTO) {
         // Kiểm tra xem email đã tồn tại hay chưa
-        if (userRepository.existsByEmail(signupDTO.getEmail())) {
+        int temp = userService.isUserNameValid(signupDTO.getUsername(),signupDTO.getEmail());
+        if (temp == 1 || temp == 2 || temp == 3 || temp == 4 || temp == 5  ) {
+            if(temp == 1){
+                throw new NotFoundException("Username đang để trống");
+            }else if(temp == 2){
+                throw new NotFoundException("Eamil đang để trống");
+            } else if (temp == 3) {
+                throw new NotFoundException("Username và Email đã tồn tại");
+            } else if (temp == 4){
+                throw new NotFoundException("Username đã tồn tại");
+            }else{
+                throw new NotFoundException("Email đã tồn tại");
+            }
             // Email đã tồn tại, trả về lỗi
-            throw new NotFoundException("Email "+ signupDTO.getEmail() + " đã tồn tại trong hệ thống!");
+
         }else {
             User user = new User();
             user.setUsername(signupDTO.getUsername());
@@ -105,4 +120,6 @@ public class AuthServiceImp implements AuthService {
             return authResponse;
         }
     }
+
+
 }
