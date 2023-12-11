@@ -2,6 +2,7 @@ package com.example.music.serviceImp;
 
 import com.example.music.exception.NotFoundException;
 import com.example.music.model.dto.UserDTOAll;
+import com.example.music.model.dto.UserUpdate;
 import com.example.music.model.entity.User;
 import com.example.music.repository.AlbumRepository;
 import com.example.music.repository.UserRepository;
@@ -95,6 +96,24 @@ public class UserServiceImp implements UserService {
         }else{
             UserDTOAll userDTOAll = new UserDTOAll(user.orElse(null));
             return userDTOAll;
+        }
+    }
+
+    @Override
+    public User updateUserProfile(String username, UserUpdate userUpdate) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent()) {
+            // Cập nhật thông tin cá nhân
+            user.orElse(null).setFullName(userUpdate.getFullName());
+            user.orElse(null).setBirthday(userUpdate.getBirthday());
+            user.orElse(null).setGender(userUpdate.getGender());
+            user.orElse(null).setAddress(userUpdate.getAddress());
+            user.orElse(null).setPhoneNumber(userUpdate.getPhoneNumber());
+
+            // Lưu thông tin người dùng đã cập nhật
+            return userRepository.save(user.orElse(null));
+        } else {
+            throw new IllegalArgumentException("User with username " + username + " not found.");
         }
     }
 }

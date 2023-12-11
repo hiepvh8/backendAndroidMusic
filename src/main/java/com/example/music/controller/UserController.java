@@ -3,6 +3,7 @@ package com.example.music.controller;
 import com.example.music.exception.NotFoundException;
 import com.example.music.model.dto.SignupDTO;
 import com.example.music.model.dto.UserDTOAll;
+import com.example.music.model.dto.UserUpdate;
 import com.example.music.model.entity.User;
 import com.example.music.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,5 +39,11 @@ public class UserController {
         }catch(Exception e){
             throw new NotFoundException("Người dùng không tồn tại!");
         }
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateUserProfileByUsername(@RequestParam String username, @RequestBody UserUpdate userUpdate) {
+        userService.updateUserProfile(username, userUpdate);
+        return ResponseEntity.ok("Thành Công !");
     }
 }
