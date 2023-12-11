@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class SongServiceImp implements SongService {
@@ -32,7 +31,7 @@ public class SongServiceImp implements SongService {
         this.albumService = albumService;
     }
 
-    // Map Song -> SongDTOAll
+    // Map Song -> SongDTOAll.
     public List<SongDTOAll> mapSongsToSongDTOAll(List<Song> songs) {
         List<SongDTOAll> songDTOAllList = new ArrayList<>();
 
@@ -182,4 +181,8 @@ public class SongServiceImp implements SongService {
         return mapSongsToSongDTOAll(songs);
     }
 
+    @Override
+    public List<Song> getSongsByAlbumId(Long albumId) {
+        return songRepository.findByAlbumId(albumId);
+    }
 }

@@ -50,16 +50,15 @@ public class Song {
     private Album album;
 
     @OneToMany(mappedBy = "song", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Comment> comments;
 
-    @ManyToMany
-    @JoinTable(name = "song_playlist",
-            joinColumns = @JoinColumn(name = "song_id"),
-            inverseJoinColumns = @JoinColumn(name = "playlist_id")
-    )
-    private List<PlayList> playlists;
+    @OneToMany(mappedBy = "song", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<PlayListSong> playListSongs;
 
     @OneToMany(mappedBy = "song")
+    @JsonBackReference
     private List<PlayHistory> playHistories;
 
 

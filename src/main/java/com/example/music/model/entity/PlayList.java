@@ -35,6 +35,7 @@ public class PlayList {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @ManyToMany(mappedBy = "playlists")
-    private List<Song> songs;
+    @OneToMany(mappedBy = "playList", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<PlayListSong> playListSongs;
 }
