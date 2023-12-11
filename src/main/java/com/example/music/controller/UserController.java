@@ -40,7 +40,7 @@ public class UserController {
             throw new NotFoundException("Người dùng không tồn tại!");
         }
     }
-
+    //
     @PutMapping("/update")
     public ResponseEntity<?> updateUserProfileByUsername(@RequestParam String username, @RequestBody UserUpdate userUpdate) {
         userService.updateUserProfile(username, userUpdate);
