@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PlaylistService {
 
-    List<PlayList> getPlayListsByUsername(String username);
+    List<PlayListDTO> getPlayListsByUsername(String username);
 
 
 

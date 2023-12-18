@@ -9,6 +9,7 @@ import com.example.music.service.PlaylistService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -23,10 +24,23 @@ public class PlaylistServiceImp implements PlaylistService {
         this.userRepository = userRepository;
     }
     @Override
-    public List<PlayList> getPlayListsByUsername(String username) {
+    public List<PlayListDTO> getPlayListsByUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
-            return user.orElse(null).getPlayLists();
+            List<PlayList> playLists = user.get().getPlayLists();
+
+            List<PlayListDTO> playListDTOs = new ArrayList<>();
+            for (PlayList playList : playLists) {
+                PlayListDTO playListDTO = new PlayListDTO();
+                playListDTO.setId(playList.getId());
+                playListDTO.setDuration(playList.getDuration());
+                playListDTO.setTimestamp(playList.getTimestamp());
+                playListDTO.setTitle(playList.getTitle());
+                // Các thuộc tính khác của PlayListDTO có thể cần được ánh xạ tương ứng từ PlayList
+
+                playListDTOs.add(playListDTO);
+            }
+            return playListDTOs;
         }
         return Collections.emptyList(); // Hoặc có thể trả về null hoặc thông báo lỗi khác tùy theo logic của bạn
     }
