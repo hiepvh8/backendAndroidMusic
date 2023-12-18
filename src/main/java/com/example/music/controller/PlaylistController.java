@@ -22,9 +22,9 @@ public class PlaylistController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<PlayList>> getPlayListsByUser(@RequestParam String username) {
-        List<PlayList> playLists = playlistService.getPlayListsByUsername(username);
-        return new ResponseEntity<>(playLists, HttpStatus.OK);
+    public ResponseEntity<List<PlayListDTO>> getPlayListsByUser(@RequestParam String username) {
+        List<PlayListDTO> playListDTOs = playlistService.getPlayListsByUsername(username);
+        return new ResponseEntity<>(playListDTOs, HttpStatus.OK);
     }
     @PostMapping("/add")
     public ResponseEntity<?> addPlaylistForUser(@RequestParam String username, @RequestBody PlayListDTO playListDTO) {
