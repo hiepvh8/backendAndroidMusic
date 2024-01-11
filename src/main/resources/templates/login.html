@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Màu nền của trang */
+            height: 100vh; /* Thiết lập chiều cao 100% của viewport */
+            display: flex;
+            justify-content: center; /* Căn giữa theo chiều ngang */
+            align-items: center; /* Căn giữa theo chiều dọc */
+        }
+
+        .container {
+            background-color: #ffffff; /* Màu nền của khối container */
+            padding: 20px;
+            border-radius: 8px; /* Bo tròn góc khối container */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 400px; /* Độ rộng tối đa của form */
+            margin: 0 auto; /* Căn giữa form trong container */
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        button {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Login</h2>
+    <form id="loginForm" action="/auth/signin" method="post">
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+</div>
+<!-- Thêm script sau vào trang HTML của bạn -->
+<!-- Thêm script sau vào trang HTML của bạn -->
+<script>
+    function login() {
+        const loginForm = document.getElementById('loginForm');
+
+        loginForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Lấy thông tin từ form
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Gửi yêu cầu đăng nhập và nhận kết quả từ server
+            const requestBody = { email: email, password: password };
+
+            const csrfMeta = document.querySelector('meta[name="_csrf"]');
+            const csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : null;
+
+            const csrfHeaderMeta = document.querySelector('meta[name="_csrf_header"]');
+            const csrfHeader = csrfHeaderMeta ? csrfHeaderMeta.getAttribute('content') : null;
+
+            fetch('/auth/signin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    [csrfHeader]: csrfToken, // Thêm token CSRF vào header
+                },
+                body: JSON.stringify(requestBody),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Invalid email or password from server');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Lưu token vào localStorage
+                    localStorage.setItem('token', data.token);
+
+                    // Chuyển hướng người dùng tới trang home
+                    window.location.href = '/home';
+                })
+                .catch(error => {
+                    // Xử lý lỗi và hiển thị thông báo
+                    console.error('Error:', error);
+                    alert('Invalid email or password 1');
+                });
+        });
+    }
+
+    // Gọi hàm login khi trang được tải
+    document.addEventListener('DOMContentLoaded', login);
+
+</script>
+<!--<script>-->
+<!--    document.addEventListener('DOMContentLoaded', function () {-->
+<!--        const loginForm = document.getElementById('loginForm');-->
+
+<!--        loginForm.addEventListener('submit', function (event) {-->
+<!--            event.preventDefault();-->
+
+<!--            const email = document.getElementById('email').value;-->
+<!--            const password = document.getElementById('password').value;-->
+
+<!--            const requestBody = { email: email, password: password };-->
+
+<!--            fetch('/auth/signin', {-->
+<!--                method: 'POST',-->
+<!--                headers: {-->
+<!--                    'Content-Type': 'application/json',-->
+<!--                },-->
+<!--                body: JSON.stringify(requestBody),-->
+<!--            })-->
+<!--                .then(response => {-->
+<!--                    if (!response.ok) {-->
+<!--                        throw new Error('Invalid email or password loi tu sever');-->
+<!--                    }-->
+<!--                    return response.json();-->
+<!--                })-->
+<!--                .then(data => {-->
+<!--                    // Lưu token vào localStorage-->
+<!--                    localStorage.setItem('token', data.token);-->
+
+<!--                    // Chuyển hướng người dùng tới trang home-->
+<!--                    window.location.href = '/home';-->
+<!--                })-->
+<!--                .catch(error => {-->
+<!--                    console.error('Error:', error);-->
+<!--                    alert('Invalid email or password');-->
+<!--                });-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -7,10 +7,11 @@ import com.example.music.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Đăng kí / Đăng nhập", description = "truy cập không cần token")
-@RestController
+@Controller
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
@@ -28,8 +29,15 @@ public class AuthController {
         return ResponseEntity.ok(authService.register(signupDTO));
     }
 
+
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
+    }
+
+
     @Operation(
-            summary = "client gửi PostMethod yêu cầu tạo tài khoản",
+            summary = "client gửi PostMethod",
             description = ""
     )
     @PostMapping("/signin")

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Music Streaming</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* CSS để tùy chỉnh giao diện */
+        .song-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .song-item {
+            display: inline-block;
+            text-align: center;
+            margin: 10px;
+        }
+
+        .cover-art {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .song-title {
+            display: block;
+            margin-top: 5px;
+        }
+
+        .song-link {
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="#">Music Streaming</a>
+    <form class="form-inline" id="searchForm">
+        <input class="form-control mr-sm-2" type="search" id="searchInput" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="searchSongs()">Search</button>
+    </form>
+    <ul class="list-group" id="searchResults"></ul>
+    <a href="/profile">
+        <img src="user-icon.png" alt="User Profile" width="30" height="30">
+    </a>
+</nav>
+
+<!-- Danh sách bài hát -->
+<div class="container mt-4" id="songListContainer">
+    <h2>Songs</h2>
+    <ul class="list-group" id="songList">
+        <!-- Danh sách bài hát sẽ được hiển thị tại đây -->
+        <li class="list-group-item" th:each="song : ${songs}">
+            <div class="song-item">
+                <a th:href="${song.filePath}" class="song-link">
+                    <img th:src="${song.coverArt}" alt="Cover Art" class="cover-art">
+                    <span th:text="${song.title}" class="song-title"></span>
+                </a>
+            </div>
+        </li>
+    </ul>
+</div>
+
+
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- JavaScript -->
+<!-- JavaScript -->
+<!-- JavaScript -->
+<script>
+    function searchSongs() {
+        // Lấy token từ localStorage
+        const token = localStorage.getItem('token');
+
+        const searchInput = document.getElementById('searchInput').value;
+        const searchUrl = '/home?partialTitle=' + encodeURIComponent(searchInput);
+
+        // Cập nhật URL
+        window.history.pushState({ path: searchUrl }, '', searchUrl);
+
+        // Lấy danh sách bài hát sau khi tìm kiếm và hiển thị trực tiếp trên trang home
+        fetch('/song/search?partialTitle=' + encodeURIComponent(searchInput))
+            .then(response => response.json())
+            .then(data => {
+                displaySearchResults(data);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function displaySearchResults(songs) {
+        const songListContainer = document.getElementById('songList');
+        songListContainer.innerHTML = ''; // Xóa danh sách bài hát trước đó
+
+        songs.forEach(song => {
+            const listItem = document.createElement('li');
+            listItem.classList.add('list-group-item');
+
+            const songItem = document.createElement('div');
+            songItem.classList.add('song-item');
+
+            const songLink = document.createElement('a');
+            songLink.setAttribute('href', song.filePath);
+            songLink.classList.add('song-link');
+
+            const coverImg = document.createElement('img');
+            coverImg.setAttribute('src', song.coverArt);
+            coverImg.setAttribute('alt', 'Cover Art');
+            coverImg.classList.add('cover-art');
+
+            const songTitle = document.createElement('span');
+            songTitle.textContent = song.title;
+            songTitle.classList.add('song-title');
+
+            songLink.appendChild(coverImg);
+            songLink.appendChild(songTitle);
+            songItem.appendChild(songLink);
+            listItem.appendChild(songItem);
+
+            songListContainer.appendChild(listItem);
+        });
+    }
+</script>
+
+<script>
+    // Lấy token từ localStorage
+    const token = localStorage.getItem('token');
+
+    // Kiểm tra xem token có tồn tại hay không
+    if (token) {
+        // Gọi API và đính kèm token trong tiêu đề Authorization
+        fetch('/song', {
+            headers: {
+                'Authorization': 'Bearer ' + token,
+            },
+        })
+            .then(response => {
+                // Xử lý kết quả từ server
+                // Nếu token hợp lệ, server sẽ phản hồi với dữ liệu yêu cầu
+            })
+            .catch(error => {
+                // Xử lý lỗi khi gọi API
+                console.error('Error:', error);
+            });
+    } else {
+        // Chuyển hướng người dùng đến trang đăng nhập nếu không có token
+        window.location.href = '/auth/login';
+    }
+</script>
+
+</body>
+</html>
